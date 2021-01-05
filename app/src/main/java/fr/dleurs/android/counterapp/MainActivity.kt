@@ -4,32 +4,26 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-
-    var counter:Int = 0
-
-    fun setTextValue() {
-        val value = findViewById<TextView>(R.id.value)
-        value.setText(counter.toString())
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setTextValue()
+        var viewModel: CounterViewModel = ViewModelProvider(this).get(CounterViewModel::class.java)
+        tvNumberValue.setText(viewModel.number.toString())
 
-        val plusBtn = findViewById<Button>(R.id.plusBtn)
-        plusBtn.setOnClickListener {
-            counter++
-            setTextValue()
+        btnIncrement.setOnClickListener {
+            viewModel.increment()
+            tvNumberValue.setText(viewModel.number.toString())
         }
 
-        val minusBtn = findViewById<Button>(R.id.minusBtn)
-        minusBtn.setOnClickListener {
-            counter--
-            setTextValue()
+        btnDecrement.setOnClickListener {
+            viewModel.decrement()
+            tvNumberValue.setText(viewModel.number.toString())
         }
     }
 }
